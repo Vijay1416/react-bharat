@@ -1,0 +1,63 @@
+.school-logo-img {
+  width: 120px;
+  height: 125px;
+  border-radius: 13px;
+  box-shadow: 2px 2px 3px 3px rgb(234, 235, 236);
+}
+.filter-card-box {
+  background-color: white;
+  padding: 15px;
+  width: 100%;
+  border-radius: 13px;
+  /* margin:auto; */
+  border: solid 0.5px rgb(196, 194, 194);
+}
+.school-heading-font {
+  font-size: 23px;
+  font-weight: 500;
+  color: rgb(63, 62, 62);
+  letter-spacing: 0.6px;
+}
+.locate-para-font-add {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  color: rgb(116, 116, 116);
+  /* padding-top: -10px; */
+}
+.locate-para-font {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  color: rgb(116, 116, 116);
+  margin : 3px;
+}
+
+.filter-card-icons{
+  float: right;
+  margin-top: -10px;
+}
+
+.filter-name-add-box{
+  margin-left: -30px;
+}
+@media only screen and (max-width: 767px) {
+  .filter-card-box {
+    background-color: white;
+    padding: 10px;
+    width: 100%;
+    border-radius: 13px;
+    margin: auto;
+    border: solid 0.5px grey;
+  }
+}
+@media only screen and (max-width: 426px) {
+  
+  .locate-para-font-add {
+    
+  }
+  .school-heading-font{
+    text-align: center;
+    
+  }
+}

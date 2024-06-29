@@ -1,0 +1,62 @@
+/* eslint-disable react/prop-types */
+// import { useState, useEffect } from 'react';
+import schoollogo from "../../images/logo1.png";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import GradeIcon from "@mui/icons-material/Grade";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { addId } from "../../redux/post/postSlice";
+// import SimpleLoader from '../loader/SimpleLoader';
+
+const FilterschoolBox = (props) => {
+  // const [isLoading, setIsLoading] = useState(true);
+
+  // useEffect(() => {
+  //     setIsLoading(false);
+  // }, [])
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { schData } = props;
+  return (
+    <>
+      {
+        <div
+          className="filter-card-box shadow-sm mt-3 mb-3 "
+          style={{ cursor: "pointer" }}
+          onClick={async () => {
+            await dispatch(addId(schData._id));
+            await localStorage.setItem("postId", schData._id);
+            navigate("/showSchool");
+          }}
+        >
+          <div className="row">
+            <div className="col-md-3 text-center mt-2">
+              <img src={schoollogo} alt="logo" className="school-logo-img" />
+            </div>
+
+            <div className="col-md-9 mt-4" >
+              <div className="filter-name-add-box">
+                <h3 className="school-heading-font">{schData.name}</h3>
+                <p className="locate-para-font-add">
+                  <LocationOnIcon className="fs-5" /> {schData.address}
+                </p>
+              </div>
+              <div className="filter-card-icons">
+                <p className="locate-para-font">
+                  <GradeIcon className="fs-5 text-warning" /> 4.5 rating
+                </p>
+                <p className="locate-para-font">
+                  <RemoveRedEyeIcon className="fs-5 text-success" /> 50 views
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </>
+  );
+};
+
+export default FilterschoolBox;

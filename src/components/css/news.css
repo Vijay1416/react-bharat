@@ -1,0 +1,18 @@
+
+.mySwiper{
+width: 100%;
+}
+
+.swiper-slide{
+    max-width: 350px;
+    width: 100% !important;
+}
+.newsImg{
+    /* background-image: none; */
+    cursor: grab;
+}
+.newsImg img{
+    position: relative;
+    width: 100%;
+    z-index: -1;
+}

@@ -1,0 +1,271 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
+import schoollogo from "../../images/logo1.png";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import FmdGoodIcon from "@mui/icons-material/FmdGood";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+// import StarIcon from "@mui/icons-material/Star";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import { useDispatch } from "react-redux";
+// import { NavLink } from "react-router-dom";
+import axios from "axios";
+import { addId } from "../../redux/post/postSlice";
+import { useSelector } from "react-redux";
+import CompTitle from "../componentTitle/CompTitle";
+// import LeftOutlined from '@mui/icons-material/ArrowBackIosNew';
+// import RightOutlined from '@mui/icons-material/ArrowForwardIos';
+// import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye'; 
+import GradeIcon from '@mui/icons-material/Grade';
+import schoolDefaultLogo from '../../images/show_school_Preview.png'
+
+
+
+
+
+
+const endPoint = "school/find";
+const url = `https://hammerhead-app-iohau.ondigitalocean.app/`;
+
+export default class SchoolCardCarousel extends React.Component {
+  render() {
+    return (
+      <>
+        <SchoolCard />
+      </>
+    );
+  }
+}
+
+const responsive = {
+  superLargeDesktop: {
+    breakpoint: { max: 4000, min: 3000 },
+    items: 4,
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 4,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+  },
+};
+
+
+
+const SchoolCard = () => {
+  const [data, setData] = useState([]);
+
+  //  / const id = useSelector((state) => state.post.id);
+
+
+
+  async function fetchIp() {
+    try {
+      const ipRes = await axios.get('https://api.ipify.org?format=json')
+      // console.log(ipRes.data.ip)
+      localStorage.setItem("ip", ipRes.data.ip)
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
+
+  useEffect(() => {
+    setSchoolData();
+    fetchIp()
+  }, []);
+
+  const setSchoolData = () => {
+    axios
+      .get(`${url}${endPoint}`)
+      .then((res) => {
+        // console.log("data------",res.data.data);
+        setData(res.data.data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  return (
+    <>
+      <div className="container-2" style={{ paddingBottom: '0px' }}>
+        <div className="IndicatorCarousel">
+          <CompTitle title="Recommanded" spanTitle="School" />
+          <br></br>
+          <Carousel
+            swipeable={true}
+            draggable={true}
+            showDots={false}
+            responsive={responsive}
+            ssr={true} // means to render carousel on server-side.
+            infinite={true}
+            autoPlay={true}
+            autoPlaySpeed={3000}
+            arrows={true}
+            minimumTouchDrag={80}
+            //customTransition="all .5"
+            // transitionDuration={700}
+            keyBoardControl={true}
+            containerClass="carousel-container"
+
+          // dotListClass="custom-dot-list-style"
+          // itemClass="carousel-item-padding-40-px"
+          >
+            {data.length > 0 &&
+              data.map((data, index) => {
+                let imgLength = data.school.schoolImage;
+                let img;
+                if (imgLength) {
+                  let imgPath = data.school.schoolImage;
+                  img = `${url}${imgPath}`;
+                  // console.log('dataImage', data.school.schoolImage);
+                } else {
+                  img = schoolDefaultLogo;
+                }
+
+                return (
+                  <SchoolCard1
+                    key={data.school._id}
+                    schId={data.school._id}
+                    schName={data.school.name}
+                    schView={data.school.views}
+                    schDp={img}
+                    schLocation={data.school.address}
+                    schRating="1"
+                    schAdmission={true}
+                  />
+                );
+              })}
+          </Carousel>
+        </div>
+      </div>
+    </>
+  );
+};
+
+// const Card = (props) => {
+//   const {
+//     schName,
+//     schView,
+//     schDp,
+//     schLocation,
+//     schRating,
+//     schAdmission,
+//     schId,
+//   } = props;
+//   // let img = `http://34.29.141.94/${schDp}`;
+//   const dispatch = useDispatch();
+//   return (
+//     <>
+//       <NavLink
+//         to="/showSchool"
+//         onClick={() => {
+//           dispatch(addId(schId));
+//           localStorage.setItem("postId", schId);
+//         }}
+//         className="IndicatorCarouselCard"
+//       >
+
+//         <div className="card card-box">
+//           <div className="scl-logo-img">
+//             <img src={schDp} className="img-fluid card-img-top" alt="logo" />
+//           </div>
+//           <div className="card-body">
+//             <hr></hr>
+//             <div className="card-view">
+//               <h6 className="rev-text">
+//                 <RemoveRedEyeIcon className="text-success fs-5"></RemoveRedEyeIcon>
+//                 {schView}
+//               </h6>
+//               <h6 className="rev-text">
+//                 <StarIcon className="text-warning fs-5"></StarIcon>
+//                 {schRating}
+//               </h6>
+//             </div>
+//             <h5 className="school-title">
+//               {schName}
+//               <CheckCircleIcon className="fs-5 text-success"></CheckCircleIcon>
+//             </h5>
+//             <p className="card-text sl-location">
+
+//               <FmdGoodIcon className="fs-5 text-muted"></FmdGoodIcon>
+//               {schLocation}
+//             </p>
+//           </div>
+//           <div className="ad-open">Admission Open</div>
+//         </div>
+//       </NavLink>
+//     </>
+//   );
+// };
+
+
+const SchoolCard1 = (props) => {
+  const {
+    schName,
+    schView,
+    schDp,
+    schLocation,
+    schRating,
+    schAdmission,
+    schId,
+  } = props;
+
+  const ip = localStorage.getItem('ip');
+  const userId = localStorage.getItem('userId');
+
+  async function addViews(schId) {
+    try {
+      const viewRes = await axios.post(url + 'view/create?userId=' + userId, {
+        "Ip": ip,
+        "schoolId": schId
+      })
+
+      // console.log(viewRes.data)
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
+
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  return (
+    <>
+
+      <div className="slider-card-sch">
+        <div className="post">
+          <div className="header_post">
+            <div className="sch-logo-img"><img src={schDp} alt="logo" style={{ display: 'flex', margin: 'auto', height: '65%', width: '80%' }} /></div>
+          </div>
+
+          <div className="body_post">
+            <div className="post_content" onClick={async () => {
+              await dispatch(addId(schId));
+              await localStorage.setItem("postId", schId);
+              await addViews(schId)
+              navigate('/showSchool')
+            }}>
+              <h5 className="bht-sch-heading">{schName} <CheckCircleIcon className="mat-icon1" /></h5>
+              <p className="loct-font"><FmdGoodIcon className="locate-icon" />{schLocation}</p>
+
+              <div className="container_infos">
+                <p className="icon-font"><RemoveRedEyeIcon className="mat-icon1" />{schRating}</p>
+                <p className="icon-font"><GradeIcon className="mat-icon2" />{schView}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </>
+  )
+}
